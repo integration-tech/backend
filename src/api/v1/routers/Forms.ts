@@ -14,9 +14,9 @@ router.post("/", async (req: Request, res: Response) => {
 
     const form = new Form({ title, apiKey, fields });
     const savedForm = await form.save();
-    res.json(savedForm);
+    return res.json(savedForm);
   } catch (error) {
-    res.status(500).json({ error: "OOPS! Something Went Wrong!" });
+    return res.status(500).json({ error: "OOPS! Something Went Wrong!" });
   }
 });
 
@@ -24,9 +24,9 @@ router.post("/", async (req: Request, res: Response) => {
 router.get("/", async (req: Request, res: Response) => {
   try {
     const forms = await Form.find();
-    res.json(forms);
+    return res.json(forms);
   } catch (error) {
-    res.status(500).json({ error: error });
+    return res.status(500).json({ error: error });
   }
 });
 
