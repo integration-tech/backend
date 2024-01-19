@@ -5,11 +5,7 @@ const SignupSchema = new mongoose.Schema({
     email:{
         type:String,
         required:[true,'Please provide your Email'],
-        unique: true,
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/,
-            "Please enter a valid email address"
-        ]
+        unique: true
     },
     username:{
         type: String,
