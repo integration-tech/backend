@@ -1,18 +1,18 @@
 import { Router, Response, Request } from "express";
 import generateApiKey from "../services/apiKey";
 import Form from "../schema/form";
+import { jwtAuthMiddleware } from "../middlewares/jwtAuthMiddleware";
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", jwtAuthMiddleware , async (req: Request, res: Response) => {
   try {
-    const { title, fields } = req.body;
-
+    const { title, fields, userId } = req.body;
     // Generate API key for the form using title and current timestamp as data
     const apiKeyData = { title, timestamp: Date.now() };
     const apiKey = generateApiKey(apiKeyData, "my_secret_key");
 
-    const form = new Form({ title, apiKey, fields });
+    const form = new Form({ userId,title, apiKey, fields });
     const savedForm = await form.save();
     res.json(savedForm);
   } catch (error) {
@@ -20,9 +20,10 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-// Get all forms
-router.get("/", async (req: Request, res: Response) => {
+// Get form by ID
+router.get("/",jwtAuthMiddleware, async (req: Request, res: Response) => {
   try {
+    const {userId} = req.body;
     const forms = await Form.find();
     res.json(forms);
   } catch (error) {
