@@ -24,7 +24,7 @@ router.post("/", jwtAuthMiddleware , async (req: Request, res: Response) => {
 router.get("/",jwtAuthMiddleware, async (req: Request, res: Response) => {
   try {
     const {userId} = req.body;
-    const forms = await Form.find();
+    const forms = await Form.find({userId:userId});
     return res.json(forms);
   } catch (error) {
     return res.status(500).json({ error: error });
